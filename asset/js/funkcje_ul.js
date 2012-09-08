@@ -24,7 +24,7 @@ var tabela;
 							 var dand = dane;
 							 $("#result").html("");
 							 for(i=0; i<json.length; i++) {
-							$("#result").append("<tr id=\"edit_db\"><td>"+dand.nazwa[i]+"</td><td><span class=\"green_highlight pj_cat\">"+dand.typ[i]+"</span></td><td><a href=\"#\">"+dand.aic[i]+"</a></td><td><span class=\"stat_up\">"+dand.klucz[i]+" <span class=\"arrow_up iconsweet\">]</span></span></td><td>"+dand.domyslne[i]+"</td><td>"+dand.extra[i]+"</td><td><span class=\"data_actions iconsweet\"><a class=\"tip_north\" original-title=\"User\" href=\"#\">a</a> <a class=\"tip_north\" original-title=\"Edit\" href=\"#\" id=\"test\" alt=\"["+i+"]\">C</a><a class=\"tip_north\" original-title=\"Delete\" href=\"#\">X</a></span></td></tr>");
+							$("#result").append("<tr id=\"edit_db\"><td>"+dand.nazwa[i]+"</td><td><span class=\"green_highlight pj_cat\">"+dand.typ[i]+"</span></td><td><a href=\"#\">"+dand.aic[i]+"</a></td><td><span class=\"stat_up\">"+dand.klucz[i]+" <span class=\"arrow_up iconsweet\">]</span></span></td><td>"+dand.domyslne[i]+"</td><td>"+dand.extra[i]+"</td><td><span class=\"data_actions iconsweet\"><a class=\"tip_north\" original-title=\"User\" href=\"#\">a</a> <a class=\"tip_north\" original-title=\"Edit\" href=\"#\" onclick=\"mysql_edit_table('"+baza+"','"+dand.nazwa[i]+"','"+dand.typ[i]+"'); return false;\" alt=\"["+i+"]\">C</a><a class=\"tip_north\" original-title=\"Delete\" href=\"#\">X</a></span></td></tr>");
 							
 								 }
 						});
@@ -59,8 +59,10 @@ var edit_baza;
 var tabela;
 var nazwa;
 
-	function mysql_edit_table(edit_baza,tabela,nazwa) {
+	function mysql_edit_table(edit_baza,tabela,typ) {
 	
-	alert("test");	
+	alert(edit_baza);
+	alert(tabela);
+	alert(typ);	
 		
 	}
