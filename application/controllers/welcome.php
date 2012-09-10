@@ -49,7 +49,14 @@ class Welcome extends CI_Controller {
 	}
 	} else {
 			$data['db_list'] = $this->mysql_current_db();
-		    $this->load->view('dba',$data);
+		    // $this->load->view('dba',$data);
+                    // 
+
+             $layout_data['content_body'] = $this->load->view('dba', $data, true);
+
+            $this->load->view('layouts/main', $layout_data);                                    
+                        
+                        
 			#echo '<br><Br>BAZYYYYYYYY<br><br>';
 			
 			#echo $this->mysql_show_db_tables_list('cms_easy');	
@@ -99,6 +106,14 @@ class Welcome extends CI_Controller {
 	mysql_connect($check['server'], $check['username'], $check['password']);	
 	}
 	
+	function friendly_size( $bytes )
+	{
+	$suffixes = array( 'B', 'kB', 'MB', 'GB', 'TB' );
+	for( $i = 0; $bytes >= 1000; $i++ )
+	$bytes = $bytes / 1024;
+	return round( $bytes, 2 ) . " {$suffixes[$i]}";
+	}
+	
 	public function mysqlstruktura() {
 	if(empty($_POST['db'])) {
 	echo 'Proszę Wybrać Bazę Danych Z Lewego Menu';	
@@ -112,7 +127,7 @@ class Welcome extends CI_Controller {
 		$dane['silnik'][$i] = $row['Engine'];
 		$dane['wpisow'][$i] = $row['Rows'];
 		$dane['kodowanie'][$i] = $row['Collation'];
-		$dane['rozmiar'][$i] = $row['Avg_row_length'];
+		$dane['rozmiar'][$i] = $this->friendly_size($row['Avg_row_length']);
 		$dane['db'] = $_POST['db'];
 		$i++;
 	}	
@@ -120,6 +135,24 @@ class Welcome extends CI_Controller {
 	print_r(json_encode($dane));
 	}
 	}
+	
+	
+	//ZWRACAM BAZY DANYCH!!!!
+	
+	function mysql_currents_db() {
+		$this->laczenie_z_baza();
+		$db_list = mysql_list_dbs();
+	
+		$i = 0;
+		$cnt = mysql_num_rows($db_list);
+		$dane = array();
+			while ($i < $cnt) {
+				$dane['bazy'][$i] = mysql_db_name($db_list, $i);
+				$i++;
+			}
+		print_r(json_encode($dane));
+	}
+	
 }
 
 /* End of file welcome.php */
