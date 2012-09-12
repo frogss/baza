@@ -21,16 +21,14 @@
             <a class="button_big" href="<?php echo base_url(); ?>login/logout"><span class="iconsweet">y</span>Wyloguj</a>
         </div>
 	<!--Notification Message-->
-    	<div class="msgbar msg_Info hide_onC">
-            <span class="iconsweet">*</span><p>Thanks for choosing Dreamworks!</p>
+    	<div class="msgbar msg_Info hide_onC" id="message">
+            <span class="iconsweet" id="message_icon">*</span><p id="message_text">Thanks for choosing Dreamworks!</p>
         </div>
 	<!--One_TWO-->
 
-
-
-	<!--One_Wrap-->
+	<!--One_Wrap--> 
  	<div class="one_wrap">
-    	<div class="widget">
+    	<div class="widget" id="first-widget">
         	<div class="widget_title"><span class="iconsweet">f</span><h5>Activity across your projects</h5></div>
             <div class="widget_body">
             	<!--Activity Table-->
@@ -51,4 +49,44 @@
                 </div>
             </div>
         </div>
-    </div>          
+        
+        <div class="widget" id="sql_insert">
+        	<div class="widget_title"><span class="iconsweet">f</span><h5>Activity across your projects</h5></div>
+            <div class="widget_body">
+            	<!--Activity Table-->
+            	<table class="activity_datatable" width="100%" border="0" cellspacing="0" id="result" cellpadding="8">
+                    <tr>
+                        <th width="8%">Nazwa</th>
+                        <th width="15%">Silnik</th>
+                        <th width="10%">Wpisów</th>
+                        <th width="20%">Kodowanie</th>
+                        <th width="10%">Rozmiar</th>
+                        <th width="13%">Actions</th>
+                    </tr>
+            
+                             
+                </table>
+				<div class="action_bar">
+                    <a class="button_small whitishBtn" href="#"><span class="iconsweet">l</span>Export Table</a>
+                </div>
+            </div>
+        </div>
+            
+    	<div class="widget" id="sql-results">
+        	<div class="widget_title"><span class="iconsweet">f</span><h5> wyniki sql </h5></div>
+            <div class="widget_body">
+            	<!--Activity Table-->
+            	<table class="activity_datatable" width="100%" border="0" cellspacing="0" id="result" cellpadding="8">
+                    <tr>
+
+                    </tr>
+            
+                             
+                </table>
+				<!--<div class="action_bar">
+                     <a class="button_small whitishBtn" href="#"><span class="iconsweet">l</span>Export Table</a> 
+                </div>-->
+            </div>
+        </div>            
+            
+    </div>

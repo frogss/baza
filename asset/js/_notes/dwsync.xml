@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
-<file name="funkcje.js" server="46.105.241.191//domains/" local="129917636772660871" remote="129917637000000000" />
-<file name="funkcje_ul.js" server="46.105.241.191//domains/" local="129915911871345550" remote="129915912000000000" />
+<file name="funkcje.js" server="46.105.241.191//domains/" local="129919315200000000" remote="129919315200000000" />
+<file name="funkcje_ul.js" server="46.105.241.191//domains/" local="129919218600000000" remote="129919218600000000" />
 <file name="bootstrap-modal.js" server="46.105.241.191//domains/" local="129914843400000000" remote="129914843400000000" />
 <file name="bootstrap-transition.js" server="46.105.241.191//domains/" local="129914843400000000" remote="129914843400000000" />
 <file name="exporting.js" server="46.105.241.191//domains/" local="129914843400000000" remote="129914843400000000" />
@@ -39,4 +39,5 @@
 <file name="jquery.ui.tabs.js" server="46.105.241.191//domains/" local="129914842800000000" remote="129914842800000000" />
 <file name="jquery.ui.widget.js" server="46.105.241.191//domains/" local="129914842800000000" remote="129914842800000000" />
 <file name="main.js" server="46.105.241.191//domains/" local="129914842800000000" remote="129914842800000000" />
+<file name="jquery.deserialize.js" server="46.105.241.191//domains/" local="129919191000000000" remote="129919191000000000" />
 </dwsync>

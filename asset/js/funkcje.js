@@ -6,10 +6,15 @@ $(document).ready
 
 	
 		$("#selects").hide();
+		$("#sql-results").hide(); // UKRYWAM RESULTAT
+		$("#sql_insert").hide(); //UKRYWAM SQL
         $('.link-mysql-structure').click
         (
             function()
             {
+				$("#first-widget").show();
+				$("#sql_insert").hide();
+				$("#message").hide();
 				$("#result").html("");
                 // alert($(this).attr('alt'));
                 $.post("/welcome/mysqlstruktura", {db: $(this).attr('alt') },
@@ -33,8 +38,7 @@ $(document).ready
 					 var json = eval(dane.nazwa);
 					 var dand = dane;
 					 $("#lists_tabel").html("");
-					// $("#js").html("");
-					//$("#lists_tabel").append("<li id=\"show_tables\"><a href=\"\" onclick=\"show_database('"+dane.db+"'); return false;\" style=\"font-weight: bold;\"><b>"+dane.db+"</b></a></li>");
+					 $("#lists_tabel").append("<input type=\"hidden\" name=\"selected_db\" id=\"selected_db\" value=\""+dane.db+"\">");
 					 for(i=0; i<json.length; i++) {
 					$("#lists_tabel").append("<li id=\"show_tables\"><a href=\"\" alt=\""+dane.db+"\" onclick=\"klikam('"+dane.db+"','"+dand.nazwa[i]+"'); return false;\" class=\"show_tables\">"+dand.nazwa[i]+"</a></li>");
 						 }
@@ -61,9 +65,11 @@ $(document).ready
 			   		(
 			   		function()
 						{
-
-
+						$("#first-widget").show();
+						$("#sql_insert").hide();
+						$("#message").hide();
 							//WYBIERAM BAZE I LADUJE DANE!!!
+							$("#result").show();
 							
 				$("#result").html("");
                 // alert($(this).attr('alt'));
@@ -90,6 +96,7 @@ $(document).ready
 						 var json = eval(dane.nazwa);
 						 var dand = dane;
 						 $("#lists_tabel").html("");
+						 $("#lists_tabel").append("<input type=\"hidden\" name=\"selected_db\" id=\"selected_db\" value=\""+dane.db+"\">");
 						 for(i=0; i<json.length; i++) {
 						$("#lists_tabel").append("<li id=\"show_tables\"><a href=\"\" alt=\""+dane.db+"\" onclick=\"klikam('"+dane.db+"','"+dand.nazwa[i]+"'); return false;\" class=\"show_tables\">"+dand.nazwa[i]+"</a></li>");
 							 }
@@ -100,40 +107,132 @@ $(document).ready
 						}
 					);
 					
-					
+					//WSTAWIANIE KODU SQL :))
 					$("#sql").click
 					(
 					function() {
-									
-					
+						$("#first-widget").hide();
+						$("#sql_insert").show();			
+					    $("#message").hide();
 							
-							
+							var db = $("#selected_db").val();  
 							$("#result").hide();
-							$(".widget_title h5").html("Zapytanie Sql");
-							$(".widget_body").html('<ul class="form_fields_container"><li><label>Zapytanie</label> <div class="form_input" style="width: 85%;"><textarea name="" id="editttt" cols="" rows="6">Select</textarea></div></li><li><label></label><a href="#" style="float:right; margin-right: 30px;" class="button_small whitishBtn"><span class="iconsweet">s</span>Wyślij Zapytanie</a></li></ul>');
-								var editor = CodeMirror.fromTextArea(document.getElementById("editttt"), {
-					 mode: "text/x-mysql",
-					lineNumbers: true,
-					tabMode: "indent",
-					onChange: function() {
-					  clearTimeout(pending);
-					  setTimeout(update, 400);
-					}
-				  });
-				  var pending;
-				  function looksLikeScheme(code) {
-					return !/^\s*\(\s*function\b/.test(code) && /^\s*[;\(]/.test(code);
-				  }
-				  function update() {
-					editor.setOption("mode", looksLikeScheme(editor.getValue()) ? "mysql" : "javascript");
-				  }
-						     alert("SQL");	
+							$("#sql_insert .widget_title h5").html("Zapytanie Sql");
+							$("#sql_insert .widget_body").html('<ul class="form_fields_container" id="sql_hide"><li><label>Zapytanie</label> <div class="form_input" style="width: 85%;"><textarea name="" id="editttt" cols="" rows="6">SELECT * FROM `'+db+'` WHERE 1</textarea></div></li><li><label></label><a class="button_small bluishBtn fl_right" style="margin-right:30px;" href="#" id="sql_send"><span class="iconsweet">=</span>Wyślij Zapytanie</a></li></ul>');
+							
+							var editor = CodeMirror.fromTextArea(document.getElementById("editttt"), {
+							mode: "text/x-mysql",
+							tabMode: "indent",
+							lineNumbers: true,
+							matchBrackets: true
+     						});
+						
+						
+						//Wysyłanie Zapytania do bazy
+						$("#sql_send").click
+						(
+							function() {
+								
+								
+						$("#sql-results").show(); // POKAZ RESULTATY 
+						$("#message").show();
+						
+					   $.post("/sql/mysql_send_sql", {db: $("#selected_db").val(), dane: editor.getValue() },
+					   function(data) {
+						
+						 var rowArr=JSON.parse(data);
+						   	    if(rowArr.code_error==2) {
+								$("#message").attr("class","msgbar msg_Error hide_onC");
+								$("#message_icon").html("X");
+								$("#message_text").html("Wystąpił Błąd: "+ rowArr.error);	
+								$("#sql-results").html(rowArr.error);
+								}else 
+								if(rowArr.code_error==1) {
+								$("#message").attr("class","msgbar msg_Success hide_onC");
+								$("#message_icon").html("=");
+								$("#message_text").html("Suksec Zapytania: "+ rowArr.error);	
+								$("#sql-results").html(rowArr.error);
+								}    
+								 
+						 var dane = JSON.parse(data);
+						 var json = eval(dane);
+						 var dand = dane;
+						 	//alert(dane[0].wyniki);					
+						var array = new Array();
+			
+								i=1;
+								
+								var p;
+								$("#sql-results").html();
+for (var key in json.wyniki) 
+{
+	is=1;
+	for(var item in json.wyniki[i]) {
+	var value = json.wyniki[i][item];
+	//alert(item);
+	//$("#sql-results").append("<tr><td>"+value+"</td></tr>");
+	array[is]=value;
+	console.log(array);
+	//alert(value);
+	is++;
+	}
+	i++;
+}
+
+								
+								
+								for(json in danee)
+								{
+								var info = json.wyniki_+i;
+								alert(info.lp);	
+								i++;
+								}
+						for(i=0; i<data.length; i++) {
+							
+//console.log(info.lp);
+							  var danes = data[i].wyniki;
+							  for (var item in danes) {
+								  alert("TU");
+								var value = dane[item];  
+								array[i] = item;
+								array[i] = value;
+								console.log(array);
+							  }
+						
+						
+
+							 }
+							
+							
+							
+							
+						 });
+								//rowArr.error
+								
+								//$("#message").attr("class","msgbar msg_Info hide_onC"); //INFO
+								//$("#message").attr("class","msgbar msg_Success hide_onC"); //Success
+								//$("#message").attr("class","msgbar msg_Error hide_onC"); //Error
+								//$("#message").attr("class","msgbar msg_Alert hide_onC"); //Alert
+								
+								//$("#message_icon").html("*"); //IKONA INFO
+								//$("#message_icon").html("="); //IKONA Success
+								//$("#message_icon").html("X"); //IKONA Error
+							//$("#message_icon").html("!"); //IKONA Alert
+								
+								//$("#message_text").html("WYJATEK KRYTYCZNY :P CZYLI NIC NIE ROBIE TYLKO ALERCIK ZE ZAPISUJE");
+								
+							}
+						)
+						
+						
 						}
 					);
+					
+					
 
                 return false;
             }
         )
 		
     }
-)
+)				  

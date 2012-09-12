@@ -16,6 +16,11 @@ $(document).ready(function() {
 var baza;
 var tabela;
  function klikam(baza,tabela) {
+	 					$("#first-widget").show();
+						$("#result").show();
+						$("#sql_insert").hide();
+						$("#sql-results").hide();
+						$("#message").hide();
 						$.post("/sql/mysql_tabela_struktura", {db: baza, table: tabela },
 						   function(data) {
 							 var dane = JSON.parse(data);
@@ -37,6 +42,11 @@ var tabela;
 //STRUKTURA BAZY DANYCH
 var base; // PRZECHWYTUJE NAZWE BAZY
   function show_database(base) {
+	 				    $("#first-widget").show();
+						$("#result").show();
+						$("#sql_insert").hide();
+						$("#sql-results").hide();
+						$("#message").hide();
 	$("#result").html("");
                 // alert($(this).attr('alt'));
                 $.post("/welcome/mysqlstruktura", {db: base },

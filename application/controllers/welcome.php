@@ -10,6 +10,7 @@ class Welcome extends CI_Controller {
 		$this->load->library('session');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
+		$this->load->library('db');
 }
 	 
 	public function index()
@@ -18,7 +19,7 @@ class Welcome extends CI_Controller {
 		$this->form_validation->set_rules('server', 'Server', 'required');
 		$this->form_validation->set_rules('username', 'Username', 'required');
 		$this->form_validation->set_rules('password', 'Password', 'required');
-			
+
 		$sprawdz = $this->check_czy_zalogowany();
 		if(empty($sprawdz)) {	
 		if ($this->form_validation->run() == FALSE)
@@ -28,8 +29,9 @@ class Welcome extends CI_Controller {
 		else
 		{
 		
-		$b = @mysql_connect($this->input->post('server'), $this->input->post('username'), $this->input->post('password'));
-		if(!@mysql_ping($b)) {
+		$this->db->Db($this->input->post('server'),$this->input->post('username'),$this->input->post('password'));
+
+		if(!@$this->db->ping()) {
 		$this->load->view('login');
 		} else {
 			$newdata = array(
@@ -65,75 +67,75 @@ class Welcome extends CI_Controller {
 	}
 	
 	function check_czy_zalogowany() {
-	$check = @$_SESSION['sessiondb'];
-	return $check['logged_in'];	
+		$check = @$_SESSION['sessiondb'];
+		return $check['logged_in'];	
 	}
 	
 	function mysql_current_db() {
-	$this->laczenie_z_baza();
-    $db_list = mysql_list_dbs();
-
-	$i = 0;
-	$cnt = mysql_num_rows($db_list);
-	$dane = array();
-	while ($i < $cnt) {
-		$dane[$i] = mysql_db_name($db_list, $i);
-		$i++;
-	}
-	return $dane;
+		$this->laczenie_z_baza();
+		$db_list = mysql_list_dbs();
+	
+		$i = 0;
+		$cnt = mysql_num_rows($db_list);
+		$dane = array();
+		while ($i < $cnt) {
+			$dane[$i] = mysql_db_name($db_list, $i);
+			$i++;
+		}
+		return $dane;
 	}
 	
 	public function mysql_show_db_tables_list() {
 		if(empty($_POST['db'])) {
-	echo 'Proszę Wybrać Bazę Danych Z Lewego Menu';	
-	} else {
-	$this->laczenie_z_baza();
-	$result = @mysql_list_tables($_POST['db']);
-	$dane = array();
-	$i=0;
-	while ($row = @mysql_fetch_row($result)) {
-		$dane['nazwa'][$i] = $row[0];
-		$dane['db'] = $_POST['db'];  
-	$i++;
-	}
-	print_r(json_encode($dane));
-	@mysql_free_result($result);
-	}
+		echo 'Proszę Wybrać Bazę Danych Z Lewego Menu';	
+		} else {
+		$this->laczenie_z_baza();
+		$result = @mysql_list_tables($_POST['db']);
+		$dane = array();
+		$i=0;
+		while ($row = @mysql_fetch_row($result)) {
+			$dane['nazwa'][$i] = $row[0];
+			$dane['db'] = $_POST['db'];  
+		$i++;
+		}
+		print_r(json_encode($dane));
+		@mysql_free_result($result);
+		}
 	}
 	
 	function laczenie_z_baza() {
-	$check = $_SESSION['sessiondb'];
-	mysql_connect($check['server'], $check['username'], $check['password']);	
+		$check = $_SESSION['sessiondb'];
+		$this->db->Db($check['server'], $check['username'], $check['password']);
 	}
 	
 	function friendly_size( $bytes )
 	{
-	$suffixes = array( 'B', 'kB', 'MB', 'GB', 'TB' );
-	for( $i = 0; $bytes >= 1000; $i++ )
-	$bytes = $bytes / 1024;
-	return round( $bytes, 2 ) . " {$suffixes[$i]}";
+		$suffixes = array( 'B', 'kB', 'MB', 'GB', 'TB' );
+		for( $i = 0; $bytes >= 1000; $i++ )
+		$bytes = $bytes / 1024;
+		return round( $bytes, 2 ) . " {$suffixes[$i]}";
 	}
 	
 	public function mysqlstruktura() {
-	if(empty($_POST['db'])) {
-	echo 'Proszę Wybrać Bazę Danych Z Lewego Menu';	
-	} else {
-	$this->laczenie_z_baza();
-	$res = mysql_query('SHOW TABLE STATUS FROM '.$_POST['db']);
-	$dane = array();
-	$i=0;
-	while($row = mysql_fetch_array($res)) {
-		$dane['nazwa'][$i] = $row['Name'];
-		$dane['silnik'][$i] = $row['Engine'];
-		$dane['wpisow'][$i] = $row['Rows'];
-		$dane['kodowanie'][$i] = $row['Collation'];
-		$dane['rozmiar'][$i] = $this->friendly_size($row['Avg_row_length']);
-		$dane['db'] = $_POST['db'];
-		$i++;
-	}	
-	//return $dane;
-	print_r(json_encode($dane));
-	}
+		if(empty($_POST['db'])) {
+		echo 'Proszę Wybrać Bazę Danych Z Lewego Menu';	
+		} else {
+		$this->laczenie_z_baza();
+		$res = mysql_query('SHOW TABLE STATUS FROM '.$_POST['db']);
+		$dane = array();
+		$i=0;
+		while($row = mysql_fetch_array($res)) {
+			$dane['nazwa'][$i] = $row['Name'];
+			$dane['silnik'][$i] = $row['Engine'];
+			$dane['wpisow'][$i] = $row['Rows'];
+			$dane['kodowanie'][$i] = $row['Collation'];
+			$dane['rozmiar'][$i] = $this->friendly_size($row['Avg_row_length']);
+			$dane['db'] = $_POST['db'];
+			$i++;
+		}	
+		//return $dane;
+		print_r(json_encode($dane));
+		}
 	}
 	
 	

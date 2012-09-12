@@ -47,6 +47,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>asset/js/highlight.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>asset/js/main.js"> </script>
 <script type="text/javascript" src="<?php echo base_url(); ?>asset/js/funkcje.js"> </script>
+<script type="text/javascript" src="<?php echo base_url(); ?>asset/js/jquery.deserialize.js"></script>
 
 
 	<script src="<?php echo base_url(); ?>asset/js/codemirror/lib/codemirror.js"></script>
