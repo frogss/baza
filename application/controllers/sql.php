@@ -16,8 +16,17 @@ class Sql extends CI_Controller {
 	public function index()
 	{
 
-	
 	}
+        
+	public function display()
+	{
+            echo 'ddddd';
+            
+            print_r($_GET['data']);            
+            
+            
+            die;
+	}        
 	
 	function check_czy_zalogowany() {
 		$check = $_SESSION['sessiondb'];
@@ -61,22 +70,20 @@ class Sql extends CI_Controller {
             if (!$res) 
             {
                 $dane['error'] = 'Invalid query: ' . mysql_error();
-				$dane['code_error'] = '2';
+				$dane['code_error'] = 2;
             } else {
 				$i=0;                                
                                 
-				while($row = mysql_fetch_array($res, MYSQL_ASSOC))
+			  while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 			  {                                    
                                     
-			  $dane['wyniki'][$i] = $row;
-			  $dane['error'] = $_POST['dane'];
-			  $dane['code_error'] = '1';
+			  $dane[$i] = $row;
 			  $i++;
 			  }	
+			  // $dane['error'] = 'Zapytanie Udało się: ' . $_POST['dane'];
+			  // $dane['code_error'] = 1;
 			}
-                               # print_r(serialize($dane));
-                                #die;                                    
-                        
+             // print_r($dane); die();                      
             echo json_encode($dane); die;
 	}
 	

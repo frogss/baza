@@ -76,9 +76,15 @@
         	<div class="widget_title"><span class="iconsweet">f</span><h5> wyniki sql </h5></div>
             <div class="widget_body">
             	<!--Activity Table-->
-            	<table class="activity_datatable" width="100%" border="0" cellspacing="0" id="result" cellpadding="8">
-                    <tr>
-
+            	<table class="activity_datatable" width="100%" border="0" cellspacing="0" id="sql-result" cellpadding="8">
+<tr>
+                        <th width="8%">ID</th>
+                        <th width="15%">Category</th>
+                        <th width="12%">Project(s)</th>
+                        <th width="12%">Status</th>
+                        <th width="20%">Remarks</th>
+                        <th width="23%">Actions</th>
+                        <th width="20%">&nbsp;</th>
                     </tr>
             
                              

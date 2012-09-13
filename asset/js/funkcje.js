@@ -136,7 +136,7 @@ $(document).ready
 								
 						$("#sql-results").show(); // POKAZ RESULTATY 
 						$("#message").show();
-						
+						$("#sql-result").html("");
 					   $.post("/sql/mysql_send_sql", {db: $("#selected_db").val(), dane: editor.getValue() },
 					   function(data) {
 						
@@ -145,15 +145,11 @@ $(document).ready
 								$("#message").attr("class","msgbar msg_Error hide_onC");
 								$("#message_icon").html("X");
 								$("#message_text").html("Wystąpił Błąd: "+ rowArr.error);	
-								$("#sql-results").html(rowArr.error);
-								}else 
-								if(rowArr.code_error==1) {
+								}else {
 								$("#message").attr("class","msgbar msg_Success hide_onC");
 								$("#message_icon").html("=");
-								$("#message_text").html("Suksec Zapytania: "+ rowArr.error);	
-								$("#sql-results").html(rowArr.error);
-								}    
-								 
+								$("#message_text").html("Suksec Zapytania: "+ editor.getValue());	
+
 						 var dane = JSON.parse(data);
 						 var json = eval(dane);
 						 var dand = dane;
@@ -163,49 +159,31 @@ $(document).ready
 								i=1;
 								
 								var p;
-								$("#sql-results").html();
-for (var key in json.wyniki) 
+								
+				
+for (i=0; i<json.length; i++)
 {
-	is=1;
-	for(var item in json.wyniki[i]) {
-	var value = json.wyniki[i][item];
-	//alert(item);
-	//$("#sql-results").append("<tr><td>"+value+"</td></tr>");
-	array[is]=value;
-	console.log(array);
-	//alert(value);
+  is=0;
+  $("#sql-result").append("<tr id=\""+i+"\">");
+	for(var item in json[i]) {
+		//alert(i);
+		//alert(json[i][item])
+	var it = item;
+	var value = json[i][item];
+	
+	$("#sql-result #"+i+"").append("<td>"+value.substr(0,40)+"</td>");
+	
+	
+	
+	array[is]= it +' => '+value;
 	is++;
 	}
-	i++;
+	$("#sql-result #"+i+"").append("<td><span class=\"data_actions iconsweet\"><a class=\"tip_north\" original-title=\"User\" href=\"#\">a</a> <a class=\"tip_north\" original-title=\"Edit\" href=\"#\">C</a><a class=\"tip_north\" original-title=\"Delete\" href=\"#\">X</a></span></td>");
 }
+ $("#sql-result").append("</tr>");
+	console.log(array);
 
-								
-								
-								for(json in danee)
-								{
-								var info = json.wyniki_+i;
-								alert(info.lp);	
-								i++;
 								}
-						for(i=0; i<data.length; i++) {
-							
-//console.log(info.lp);
-							  var danes = data[i].wyniki;
-							  for (var item in danes) {
-								  alert("TU");
-								var value = dane[item];  
-								array[i] = item;
-								array[i] = value;
-								console.log(array);
-							  }
-						
-						
-
-							 }
-							
-							
-							
-							
 						 });
 								//rowArr.error
 								
@@ -233,6 +211,8 @@ for (var key in json.wyniki)
                 return false;
             }
         )
-		
     }
+	
 )				  
+
+
